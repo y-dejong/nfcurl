@@ -1,0 +1,11 @@
+The different NFC types are enumerated in NfcDataGeneratorType as indices
+Our interested types are:
+NfcDataGeneratorTypeNTAG203
+NfcDataGeneratorTypeNTAG215
+NfcDataGeneratorTypeNTAG216
+
+<nfc/helpers/nfc_data_generator.h>
+nfc_data_generator_get_name(index) gets the cstr name of the device type
+nfc_data_generator_fill_data(type, NfcDevice*) fills the NfcDevice
+with a UID, type, basic data, and the start of the memory pages
+
