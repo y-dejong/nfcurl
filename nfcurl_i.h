@@ -4,9 +4,9 @@
 #include <gui/scene_manager.h>
 #include <gui/view_dispatcher.h>
 
-#include <gui/modules/text_input.h>
 #include <gui/modules/popup.h>
 #include <gui/modules/submenu.h>
+#include "views/text_input.h"
 
 #include <furi/core/string.h>
 
