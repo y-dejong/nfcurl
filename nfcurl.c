@@ -34,8 +34,6 @@ static NFCUrlApp* nfcurl_alloc() {
 	view_dispatcher_add_view(nfcurl->view_dispatcher, NFCUrlViewSubmenu, submenu_get_view(nfcurl->submenu));
 
 	nfcurl->text_buffer = malloc(200);
-	nfcurl->data = malloc(540);
-	nfcurl->uid = malloc(7);
 
 	return nfcurl;
 }
@@ -49,11 +47,10 @@ static void nfcurl_free(NFCUrlApp* nfcurl) {
 	view_dispatcher_free(nfcurl->view_dispatcher);
 	scene_manager_free(nfcurl->scene_manager);
 
-	free(nfcurl->text_buffer);
-	free(nfcurl->data);
-	free(nfcurl->uid);
 	furi_string_free(nfcurl->url);
 	furi_string_free(nfcurl->name);
+
+	free(nfcurl->text_buffer);
 	free(nfcurl);
 }
 

@@ -10,6 +10,8 @@
 
 #include <furi/core/string.h>
 
+#include <nfc/nfc_device.h>
+
 struct NFCUrlApp {
 	SceneManager* scene_manager;
 	ViewDispatcher* view_dispatcher;
@@ -19,13 +21,11 @@ struct NFCUrlApp {
 	Popup* popup;
 	Submenu* submenu;
 
-    char prefix;
     FuriString* url;
 	FuriString* name;
 	char* text_buffer;
 
-	uint8_t* uid;
-    uint8_t* data;
+	NfcDevice* device;
 };
 
 typedef struct NFCUrlApp NFCUrlApp;
