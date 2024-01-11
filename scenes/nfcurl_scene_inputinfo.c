@@ -1,15 +1,18 @@
 #include "../nfcurl_i.h"
 #include "nfcurl_scene.h"
 
+static void clear_text_buffer(char* buffer) {
+	for(unsigned i = 0; i < 200; ++i) buffer[i] = '\0'; // WARNING length is hard coded
+}
+
 static void nfcurl_scene_inputinfo_text_callback(void* context) {
 	NFCUrlApp* nfcurl = context;
-	if(!nfcurl->url) {
-		nfcurl->url = furi_string_alloc_set_str(nfcurl->text_buffer);
-		furi_string_cat_str(nfcurl->url, ".com");
+	if(furi_string_empty(nfcurl->url)) {
+	    furi_string_set_str(nfcurl->url, nfcurl->text_buffer);
 		text_input_set_header_text(nfcurl->text_input, "Enter Name");
-	    for(unsigned i = 0; i < 200; ++i) nfcurl->text_buffer[i] = '\0';
+	    clear_text_buffer(nfcurl->text_buffer);
 	} else {
-		nfcurl->name = furi_string_alloc_set_str(nfcurl->text_buffer);
+	    furi_string_set_str(nfcurl->name, nfcurl->text_buffer);
 		scene_manager_next_scene(nfcurl->scene_manager, NFCUrlSceneDoneMenu);
 	}
 }
@@ -32,5 +35,7 @@ bool nfcurl_scene_inputinfo_on_event(void* context, SceneManagerEvent event) {
 }
 
 void nfcurl_scene_inputinfo_on_exit(void* context) {
-	UNUSED(context);
+    NFCUrlApp* nfcurl = context;
+	clear_text_buffer(nfcurl->text_buffer);
+	text_input_reset(nfcurl->text_input);
 }

@@ -2,7 +2,7 @@
 
 App(
     appid="nfcurl",  # Must be unique
-    name="NFC URL Creator",  # Displayed in menus
+    name="NFC URL",  # Displayed in menus
     apptype=FlipperAppType.EXTERNAL,
     entry_point="nfcurl_app",
     stack_size=2 * 1024,

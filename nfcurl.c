@@ -4,11 +4,13 @@
 #include <furi.h>
 
 static bool nfcurl_custom_event_callback(void* context, uint32_t event) {
+	furi_assert(context);
     NFCUrlApp* nfcurl = context;
 	return scene_manager_handle_custom_event(nfcurl->scene_manager, event);
 }
 
 static bool nfcurl_back_event_callback(void* context) {
+	furi_assert(context);
 	NFCUrlApp* nfcurl = context;
 	return scene_manager_handle_back_event(nfcurl->scene_manager);
 }
@@ -33,6 +35,8 @@ static NFCUrlApp* nfcurl_alloc() {
 	nfcurl->submenu = submenu_alloc();
 	view_dispatcher_add_view(nfcurl->view_dispatcher, NFCUrlViewSubmenu, submenu_get_view(nfcurl->submenu));
 
+	nfcurl->url = furi_string_alloc();
+	nfcurl->name = furi_string_alloc();
 	nfcurl->text_buffer = malloc(200);
 
 	return nfcurl;
@@ -44,12 +48,12 @@ static void nfcurl_free(NFCUrlApp* nfcurl) {
 	view_dispatcher_remove_view(nfcurl->view_dispatcher, NFCUrlViewPopup);
     popup_free(nfcurl->popup);
 
+	furi_record_close(RECORD_GUI);
 	view_dispatcher_free(nfcurl->view_dispatcher);
 	scene_manager_free(nfcurl->scene_manager);
 
 	furi_string_free(nfcurl->url);
 	furi_string_free(nfcurl->name);
-
 	free(nfcurl->text_buffer);
 	free(nfcurl);
 }
