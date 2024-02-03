@@ -2,18 +2,27 @@
 
 #include <gui/scene_manager.h>
 
+#define ADD_SCENE(name, id) NfcUrlScene##id,
 typedef enum {
-	NFCUrlSceneInputInfo,
-	NFCUrlSceneDoneMenu,
-	NFCUrlSceneCount
-} NFCUrlScene;
+#include "nfcurl_scene_config.h"
+	NfcUrlSceneCount
+} NfcUrlScene;
+#undef ADD_SCENE
 
 extern const SceneManagerHandlers nfcurl_scene_handlers;
 
-void nfcurl_scene_inputinfo_on_enter(void* context);
-bool nfcurl_scene_inputinfo_on_event(void* context, SceneManagerEvent event);
-void nfcurl_scene_inputinfo_on_exit(void* context);
+// Generate scene on_enter handlers declaration
+#define ADD_SCENE(name, id) void nfcurl_scene_##name##_on_enter(void*);
+#include "nfcurl_scene_config.h"
+#undef ADD_SCENE
 
-void nfcurl_scene_donemenu_on_enter(void* context);
-bool nfcurl_scene_donemenu_on_event(void* context, SceneManagerEvent event);
-void nfcurl_scene_donemenu_on_exit(void* context);
+// Generate scene on_event handlers declaration
+#define ADD_SCENE(name, id) \
+    bool nfcurl_scene_##name##_on_event(void* context, SceneManagerEvent event);
+#include "nfcurl_scene_config.h"
+#undef ADD_SCENE
+
+// Generate scene on_exit handlers declaration
+#define ADD_SCENE(name, id) void nfcurl_scene_##name##_on_exit(void* context);
+#include "nfcurl_scene_config.h"
+#undef ADD_SCENE

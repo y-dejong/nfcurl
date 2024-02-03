@@ -1,23 +1,29 @@
 #include "nfcurl_scene.h"
 
+// Generate scene on_enter handlers array
+#define ADD_SCENE(name, id) nfcurl_scene_##name##_on_enter,
 void (*const nfcurl_on_enter_handlers[])(void*) = {
-	nfcurl_scene_inputinfo_on_enter,
-	nfcurl_scene_donemenu_on_enter,
+#include "nfcurl_scene_config.h"
 };
+#undef ADD_SCENE
 
+// Generate scene on_event handlers array
+#define ADD_SCENE(name, id) nfcurl_scene_##name##_on_event,
 bool (*const nfcurl_on_event_handlers[])(void* context, SceneManagerEvent event) = {
-	nfcurl_scene_inputinfo_on_event,
-	nfcurl_scene_donemenu_on_event,
+#include "nfcurl_scene_config.h"
 };
+#undef ADD_SCENE
 
-void (*const nfcurl_on_exit_handlers[])(void*) = {
-	nfcurl_scene_inputinfo_on_exit,
-	nfcurl_scene_donemenu_on_exit
+// Generate scene on_exit handlers array
+#define ADD_SCENE(name, id) nfcurl_scene_##name##_on_exit,
+void (*const nfcurl_on_exit_handlers[])(void* context) = {
+#include "nfcurl_scene_config.h"
 };
+#undef ADD_SCENE
 
 const SceneManagerHandlers nfcurl_scene_handlers = {
 	.on_enter_handlers = nfcurl_on_enter_handlers,
 	.on_event_handlers = nfcurl_on_event_handlers,
 	.on_exit_handlers = nfcurl_on_exit_handlers,
-	.scene_num = NFCUrlSceneCount
+	.scene_num = NfcUrlSceneCount
 };
