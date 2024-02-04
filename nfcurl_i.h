@@ -7,6 +7,7 @@
 #include <gui/modules/widget.h>
 #include <gui/modules/popup.h>
 #include <gui/modules/submenu.h>
+#include <gui/modules/button_menu.h>
 #include "views/text_input.h"
 
 #include <furi/core/string.h>
@@ -15,6 +16,11 @@
 #include <nfc/nfc_listener.h>
 
 #include <notification/notification_messages.h>
+
+typedef struct UrlPair {
+	FuriString* name;
+	FuriString* url;
+} UrlPair;
 
 struct NfcUrlApp {
 	SceneManager* scene_manager;
@@ -25,11 +31,14 @@ struct NfcUrlApp {
     TextInput* text_input;
 	Popup* popup;
 	Submenu* submenu;
+	ButtonMenu* button_menu;
 
     FuriString* url;
 	FuriString* name;
 	FuriString* path;
 	char* text_buffer;
+	UrlPair* urlpairs;
+	size_t urlpairs_count;
 
 	Nfc* nfc;
 	NfcDevice* device;
@@ -44,7 +53,8 @@ typedef enum {
 	NfcUrlViewTextInput,
 	NfcUrlViewPopup,
 	NfcUrlViewSubmenu,
-	NfcUrlViewWidget
+	NfcUrlViewWidget,
+	NfcUrlViewButtonMenu
 } NfcUrlView;
 
 enum NfcUrlCustomEventType{

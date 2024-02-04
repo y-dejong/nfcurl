@@ -41,10 +41,14 @@ static NfcUrlApp* nfcurl_alloc() {
 	nfcurl->submenu = submenu_alloc();
 	view_dispatcher_add_view(nfcurl->view_dispatcher, NfcUrlViewSubmenu, submenu_get_view(nfcurl->submenu));
 
+	nfcurl->button_menu = button_menu_alloc();
+	view_dispatcher_add_view(nfcurl->view_dispatcher, NfcUrlViewButtonMenu, button_menu_get_view(nfcurl->button_menu));
+
 	nfcurl->url = furi_string_alloc();
 	nfcurl->name = furi_string_alloc();
 	nfcurl->path = furi_string_alloc();
 	nfcurl->text_buffer = malloc(200);
+	nfcurl->urlpairs = malloc(sizeof(UrlPair) * 100); // TODO: support more/dynamic size
 
 	nfcurl->nfc = nfc_alloc();
 	nfcurl->notifications = furi_record_open(RECORD_NOTIFICATION);
@@ -59,6 +63,8 @@ static void nfcurl_free(NfcUrlApp* nfcurl) {
 	text_input_free(nfcurl->text_input);
 	view_dispatcher_remove_view(nfcurl->view_dispatcher, NfcUrlViewPopup);
     popup_free(nfcurl->popup);
+	view_dispatcher_remove_view(nfcurl->view_dispatcher, NfcUrlViewButtonMenu);
+    button_menu_free(nfcurl->button_menu);
 
 	furi_record_close(RECORD_GUI);
 	view_dispatcher_free(nfcurl->view_dispatcher);
@@ -68,6 +74,7 @@ static void nfcurl_free(NfcUrlApp* nfcurl) {
 	furi_string_free(nfcurl->name);
 	furi_string_free(nfcurl->path);
 	free(nfcurl->text_buffer);
+	free(nfcurl->urlpairs);
 
 	nfc_free(nfcurl->nfc);
 	furi_record_close(RECORD_NOTIFICATION);

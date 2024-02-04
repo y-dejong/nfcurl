@@ -34,7 +34,6 @@ static bool nfcurl_export_nfc_file(NfcUrlApp* app) {
 }
 
 static bool nfcurl_save_url(NfcUrlApp* app) {
-	UNUSED(app);
 	bool success = true;
     FuriString* outpath = furi_string_alloc_set_str(APP_DATA_PATH("urls"));
 
@@ -66,7 +65,6 @@ void nfcurl_scene_save_on_enter(void* context) {
 
 	popup_set_header(app->popup, "Saved", 95, 26, AlignCenter, AlignBottom);
 	popup_set_text(app->popup, furi_string_get_cstr(app->name), 95, 30, AlignCenter, AlignTop);
-	//scene_manager_set_scene_state(app->scene_manager, NfcUrlSceneSave, 0);
 	view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewTextInput);
 }
 
@@ -88,7 +86,6 @@ bool nfcurl_scene_save_on_event(void* context, SceneManagerEvent event) {
 			}
 			popup_set_header(app->popup, (success ? "Saved": "Save Failed"), 95, 26, AlignCenter, AlignBottom);
 		    view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewPopup);
-			//scene_manager_set_scene_state(app->scene_manager, NfcUrlSceneSave, 1);
 			consumed = true;
 		}
 	}
