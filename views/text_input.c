@@ -40,7 +40,7 @@ static const uint8_t keyboard_row_count = 3;
 
 #define ENTER_KEY '\r'
 #define BACKSPACE_KEY '\b'
-#define SYMBOLS_KEY '\a'
+#define SYMBOLS_KEY '^'
 
 static const TextInputKey keyboard_keys_row_1[] = {
     {'q', 1, 8},
@@ -108,7 +108,7 @@ static const TextInputKey keyboard_keys_alt_row_1[] = {
 };
 
 static const TextInputKey keyboard_keys_alt_row_2[] = {
-    {'"', 1, 20},
+    {'\"', 1, 20},
     {'\'', 10, 20},
     {':', 19, 20},
     {';', 28, 20},
@@ -124,17 +124,17 @@ static const TextInputKey keyboard_keys_alt_row_2[] = {
 };
 
 static const TextInputKey keyboard_keys_alt_row_3[] = {
-    {'^', 1, 32},
-    {'=', 10, 32},
-    {'{', 19, 32},
-    {'}', 28, 32},
-    {'\\', 37, 32},
+    {'=', 1, 32},
+    {'[', 10, 32},
+    {']', 19, 32},
+    {'{', 28, 32},
+    {'}', 37, 32},
     {'%', 46, 32},
     {'.', 55, 32},
     {SYMBOLS_KEY, 64, 32},
     {ENTER_KEY, 74, 23},
-    {'[', 100, 32},
-    {']', 110, 32},
+    {'\\', 100, 32},
+    {'8', 110, 32},
     {'9', 120, 32},
 };
 

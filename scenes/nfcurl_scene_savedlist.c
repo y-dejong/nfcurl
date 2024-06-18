@@ -1,3 +1,4 @@
+#include "gui/modules/button_menu.h"
 #include "nfcurl_i.h"
 #include "nfcurl_scene.h"
 
@@ -44,6 +45,7 @@ void nfcurl_scene_savedlist_on_enter(void* context) {
 	app->urlpairs_count = index;
 	furi_string_free(line);
 
+	button_menu_set_header(app->button_menu, "Saved URLs:");
 	view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewButtonMenu);
  cleanup:
 	file_stream_close(urlstream);

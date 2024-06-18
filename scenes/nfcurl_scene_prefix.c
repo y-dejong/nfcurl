@@ -39,6 +39,7 @@ void nfcurl_scene_prefix_on_enter(void* context) {
 							 ButtonMenuItemTypeCommon,
 							 app);
 	}
+	button_menu_set_header(app->button_menu, "URL Prefix:");
 	view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewButtonMenu);
 }
 
