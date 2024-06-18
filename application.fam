@@ -13,7 +13,7 @@ App(
     fap_category="NFC",
     fap_version="1.0",
     fap_icon="nfcurl.png",  # 10x10 1-bit PNG
-    fap_description="Create NFC tags that direct you to a website",
+    fap_description="Create NFC tags that direct you to a URL",
     fap_author="Yasper De Jong",
     fap_weburl="https://github.com/y-dejong/nfcurl",
     fap_icon_assets="images",  # Image assets to compile for this application
