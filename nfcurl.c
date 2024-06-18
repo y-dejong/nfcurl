@@ -1,5 +1,7 @@
+#include "gui/view_dispatcher.h"
 #include "nfcurl_i.h"
 #include "scenes/nfcurl_scene.h"
+#include <gui/view.h> // Remove after debugging view
 
 #include <furi.h>
 
@@ -65,10 +67,11 @@ static void nfcurl_free(NfcUrlApp* nfcurl) {
     popup_free(nfcurl->popup);
 	view_dispatcher_remove_view(nfcurl->view_dispatcher, NfcUrlViewButtonMenu);
     button_menu_free(nfcurl->button_menu);
+	view_dispatcher_remove_view(nfcurl->view_dispatcher, NfcUrlViewSubmenu);
+	submenu_free(nfcurl->submenu);
 
-	furi_record_close(RECORD_GUI);
-	view_dispatcher_free(nfcurl->view_dispatcher);
 	scene_manager_free(nfcurl->scene_manager);
+	view_dispatcher_free(nfcurl->view_dispatcher);
 
 	furi_string_free(nfcurl->url);
 	furi_string_free(nfcurl->name);
@@ -77,6 +80,7 @@ static void nfcurl_free(NfcUrlApp* nfcurl) {
 	free(nfcurl->urlpairs);
 
 	nfc_free(nfcurl->nfc);
+	furi_record_close(RECORD_GUI);
 	furi_record_close(RECORD_NOTIFICATION);
 	free(nfcurl);
 }
@@ -102,7 +106,7 @@ void nfcurl_create_tag(NfcUrlApp* app) {
 		data->page[4].data[2] |= 0x10;
 		data->page[5].data[0] = url_size;
 		data->page[5].data[1] = 'U'; // RTD well-known type
-		data->page[5].data[2] = 0x04; // URL prefix TODO let user select
+		data->page[5].data[2] = app->prefix; // URL prefix
 	    page_index = 5;
 		data_index = 3;
 	} else {
@@ -148,5 +152,6 @@ int32_t nfcurl_app(void* p) {
 	view_dispatcher_run(app->view_dispatcher);
 
 	nfcurl_free(app);
+	FURI_LOG_D("NfcUrl", "free returned");
     return 0;
 }

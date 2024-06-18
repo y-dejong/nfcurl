@@ -1,17 +1,20 @@
 # For details & more options, see documentation/AppManifests.md in firmware repo
 
 App(
-    appid="nfcurl",  # Must be unique
-    name="NFC URL",  # Displayed in menus
+    appid="nfcurl",
+    name="NFC URL",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="nfcurl_app",
+	requires=[
+		"gui",
+		"storage"
+	],
     stack_size=2 * 1024,
     fap_category="NFC",
-    # Optional values
-    # fap_version="0.1",
+    fap_version="1.0",
     fap_icon="nfcurl.png",  # 10x10 1-bit PNG
     fap_description="Create NFC tags that direct you to a website",
     fap_author="Yasper De Jong",
-    fap_weburl="https://github.com/y-dejong",
+    fap_weburl="https://github.com/y-dejong/nfcurl",
     fap_icon_assets="images",  # Image assets to compile for this application
 )

@@ -33,6 +33,7 @@ struct NfcUrlApp {
 	Submenu* submenu;
 	ButtonMenu* button_menu;
 
+	char prefix;
     FuriString* url;
 	FuriString* name;
 	FuriString* path;
@@ -62,3 +63,4 @@ enum NfcUrlCustomEventType{
 };
 
 void nfcurl_create_tag(NfcUrlApp* app);
+

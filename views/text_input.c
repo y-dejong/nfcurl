@@ -2,6 +2,7 @@
 #include <gui/elements.h>
 #include <nfcurl_icons.h>
 #include <furi.h>
+#include <string.h>
 
 struct TextInput {
     View* view;
@@ -25,6 +26,7 @@ typedef struct {
 
     uint8_t selected_row;
     uint8_t selected_column;
+	bool symbols_mode;
 
     TextInputValidatorCallback validator_callback;
     void* validator_callback_context;
@@ -38,6 +40,7 @@ static const uint8_t keyboard_row_count = 3;
 
 #define ENTER_KEY '\r'
 #define BACKSPACE_KEY '\b'
+#define SYMBOLS_KEY '\a'
 
 static const TextInputKey keyboard_keys_row_1[] = {
     {'q', 1, 8},
@@ -51,9 +54,9 @@ static const TextInputKey keyboard_keys_row_1[] = {
     {'o', 73, 8},
     {'p', 82, 8},
     {'0', 91, 8},
-    {'.', 100, 8},
-    {'/', 110, 8},
-    {'@', 120, 8},
+    {'1', 100, 8},
+    {'2', 110, 8},
+    {'3', 120, 8},
 };
 
 static const TextInputKey keyboard_keys_row_2[] = {
@@ -67,9 +70,9 @@ static const TextInputKey keyboard_keys_row_2[] = {
     {'k', 64, 20},
     {'l', 73, 20},
     {BACKSPACE_KEY, 82, 12},
-    {'?', 100, 20},
-    {'#', 110, 20},
-    {'=', 120, 20},
+    {'4', 100, 20},
+    {'5', 110, 20},
+    {'6', 120, 20},
 };
 
 static const TextInputKey keyboard_keys_row_3[] = {
@@ -80,10 +83,58 @@ static const TextInputKey keyboard_keys_row_3[] = {
     {'b', 37, 32},
     {'n', 46, 32},
     {'m', 55, 32},
-    {'_', 64, 32},
+    {SYMBOLS_KEY, 64, 32},
     {ENTER_KEY, 74, 23},
-    {'-', 100, 32},
+    {'7', 100, 32},
     {'8', 110, 32},
+    {'9', 120, 32},
+};
+
+static const TextInputKey keyboard_keys_alt_row_1[] = {
+    {'@', 1, 8},
+    {'#', 10, 8},
+    {'$', 19, 8},
+    {'_', 28, 8},
+    {'&', 37, 8},
+    {'-', 46, 8},
+    {'+', 55, 8},
+    {'(', 64, 8},
+    {')', 73, 8},
+    {'/', 82, 8},
+    {'*', 91, 8},
+    {'1', 100, 8},
+    {'2', 110, 8},
+    {'3', 120, 8},
+};
+
+static const TextInputKey keyboard_keys_alt_row_2[] = {
+    {'"', 1, 20},
+    {'\'', 10, 20},
+    {':', 19, 20},
+    {';', 28, 20},
+    {'!', 37, 20},
+    {'?', 46, 20},
+    {'~', 55, 20},
+    {'`', 64, 20},
+    {'|', 73, 20},
+    {BACKSPACE_KEY, 82, 12},
+    {'4', 100, 20},
+    {'5', 110, 20},
+    {'6', 120, 20},
+};
+
+static const TextInputKey keyboard_keys_alt_row_3[] = {
+    {'^', 1, 32},
+    {'=', 10, 32},
+    {'{', 19, 32},
+    {'}', 28, 32},
+    {'\\', 37, 32},
+    {'%', 46, 32},
+    {'.', 55, 32},
+    {SYMBOLS_KEY, 64, 32},
+    {ENTER_KEY, 74, 23},
+    {'[', 100, 32},
+    {']', 110, 32},
     {'9', 120, 32},
 };
 
@@ -107,18 +158,18 @@ static uint8_t get_row_size(uint8_t row_index) {
     return row_size;
 }
 
-static const TextInputKey* get_row(uint8_t row_index) {
+static const TextInputKey* get_row(uint8_t row_index, bool symbols_mode) {
     const TextInputKey* row = NULL;
 
     switch(row_index + 1) {
     case 1:
-        row = keyboard_keys_row_1;
+        row = symbols_mode ? keyboard_keys_alt_row_1 : keyboard_keys_row_1;
         break;
     case 2:
-        row = keyboard_keys_row_2;
+        row = symbols_mode ? keyboard_keys_alt_row_2 : keyboard_keys_row_2;
         break;
     case 3:
-        row = keyboard_keys_row_3;
+        row = symbols_mode ? keyboard_keys_alt_row_3 : keyboard_keys_row_3;
         break;
     default:
         furi_crash();
@@ -128,7 +179,7 @@ static const TextInputKey* get_row(uint8_t row_index) {
 }
 
 static char get_selected_char(TextInputModel* model) {
-    return get_row(model->selected_row)[model->selected_column].text;
+    return get_row(model->selected_row, model->symbols_mode)[model->selected_column].text;
 }
 
 static bool char_is_lowercase(char letter) {
@@ -190,7 +241,7 @@ static void text_input_view_draw_callback(Canvas* canvas, void* _model) {
 
     for(uint8_t row = 0; row < keyboard_row_count; row++) {
         const uint8_t column_count = get_row_size(row);
-        const TextInputKey* keys = get_row(row);
+        const TextInputKey* keys = get_row(row, model->symbols_mode);
 
         for(size_t column = 0; column < column_count; column++) {
             if(keys[column].text == ENTER_KEY) {
@@ -326,7 +377,9 @@ static void text_input_handle_ok(TextInput* text_input, TextInputModel* model, b
         }
     } else if(selected == BACKSPACE_KEY) {
         text_input_backspace_cb(model);
-    } else {
+    } else if(selected == SYMBOLS_KEY) {
+		model->symbols_mode = !model->symbols_mode;
+	} else {
         if(model->clear_default_text) {
             text_length = 0;
         }

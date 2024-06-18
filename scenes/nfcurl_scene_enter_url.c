@@ -14,8 +14,7 @@ void nfcurl_scene_enter_url_on_enter(void* context) {
 	NfcUrlApp* app = context;
 	text_input_set_header_text(app->text_input, "Enter URL");
 	text_input_set_result_callback(app->text_input, nfcurl_scene_enter_url_text_callback,
-								   app, app->text_buffer, 200, true);
-
+								   app, app->text_buffer, 200, false);
 	view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewTextInput);
 }
 
@@ -35,6 +34,7 @@ bool nfcurl_scene_enter_url_on_event(void* context, SceneManagerEvent event) {
 
 void nfcurl_scene_enter_url_on_exit(void* context) {
 	NfcUrlApp* app = context;
-	clear_text_buffer(app->text_buffer, 200);
+	UNUSED(clear_text_buffer);
+	//clear_text_buffer(app->text_buffer, 200);
 	text_input_reset(app->text_input);
 }

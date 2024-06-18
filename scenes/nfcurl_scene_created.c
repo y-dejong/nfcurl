@@ -1,4 +1,5 @@
 #include "../nfcurl_i.h"
+#include "gui/scene_manager.h"
 #include "nfcurl_scene.h"
 
 static void nfcurl_scene_created_widget_callback(GuiButtonType result, InputType type, void* context) {
@@ -15,7 +16,7 @@ void nfcurl_scene_created_on_enter(void* context) {
 
     widget_add_text_box_element(app->widget, 0, 0, 128, 23, AlignCenter, AlignCenter, "NFC Device Created", false);
 	widget_add_text_box_element(app->widget, 0, 26, 128, 23, AlignCenter, AlignCenter, furi_string_get_cstr(app->path), false);
-	widget_add_button_element(app->widget, GuiButtonTypeLeft, "Exit", nfcurl_scene_created_widget_callback, app);
+	widget_add_button_element(app->widget, GuiButtonTypeLeft, "Edit", nfcurl_scene_created_widget_callback, app);
 	widget_add_button_element(app->widget, GuiButtonTypeRight, "Use", nfcurl_scene_created_widget_callback, app);
 	widget_add_button_element(app->widget, GuiButtonTypeCenter, "Options", nfcurl_scene_created_widget_callback, app);
 
@@ -28,8 +29,7 @@ bool nfcurl_scene_created_on_event(void* context, SceneManagerEvent event) {
 	if(event.type == SceneManagerEventTypeCustom) {
 		switch(event.event) {
 	    case GuiButtonTypeLeft:
-		    scene_manager_stop(app->scene_manager);
-			view_dispatcher_stop(app->view_dispatcher);
+		    scene_manager_previous_scene(app->scene_manager);
 		    consumed = true;
 			break;
 		case GuiButtonTypeRight:
@@ -41,6 +41,9 @@ bool nfcurl_scene_created_on_event(void* context, SceneManagerEvent event) {
 			consumed = true;
 			break;
 		}
+	} else if (event.type == SceneManagerEventTypeBack){
+		scene_manager_stop(app->scene_manager);
+		view_dispatcher_stop(app->view_dispatcher);
 	}
 	return consumed;
 }

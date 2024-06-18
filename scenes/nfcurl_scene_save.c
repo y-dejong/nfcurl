@@ -4,6 +4,9 @@
 #include <toolbox/path.h>
 #include <storage/storage.h>
 #include <toolbox/stream/file_stream.h>
+#include <toolbox/stream/stream.h>
+
+#include <furi/core/log.h>
 
 #define NFC_APP_FOLDER ANY_PATH("nfc")
 #define NFC_APP_EXTENSION ".nfc"

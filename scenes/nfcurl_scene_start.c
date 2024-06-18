@@ -29,7 +29,7 @@ bool nfcurl_scene_start_on_event(void* context, SceneManagerEvent event) {
 
 	if(event.type == SceneManagerEventTypeCustom) {
 		if(event.event == SubmenuIndexNew) {
-			scene_manager_next_scene(app->scene_manager, NfcUrlSceneEnterUrl);
+			scene_manager_next_scene(app->scene_manager, NfcUrlScenePrefix);
 			consumed = true;
 		} else if(event.event == SubmenuIndexSaved) {
 			scene_manager_next_scene(app->scene_manager, NfcUrlSceneSavedList);
