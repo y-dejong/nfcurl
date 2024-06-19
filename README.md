@@ -18,10 +18,10 @@ NFC URL will have GitHub releases and be available (hopefully) on the Flipper Ap
 ## Usage
 
 1. Press "New" to create a new NFC Tag
-<img src="https://cdn.discordapp.com/attachments/941082548900073472/1252726481851908167/flpr-2024-06-18-13-47-35.png?ex=667343f3&is=6671f273&hm=848211a02a7910ac55572ea728903feac7ad50e4af1a5b98feb8d8a90a69abff&" width="400px" />
+<img src="./screenshots/start.png" width="400px" />
 2. Enter your URL
-<img src="./screenshots/prefix.png" width="200px" /> <img src="./screenshots/enter-url.png" width="400px" />
+<img src="./screenshots/prefix.png" width="200px" style="display:inline;" /> <img src="./screenshots/enter-url.png" width="400px" style="display:inline;" />
 3. Emulate your NFC tag
-<img src="./screenshots/created.png" width="400px" /> <img src="./screenshots/emulate.png" width="400px" />
+<img src="./screenshots/created.png" width="400px" style="display:inline;" /> <img src="./screenshots/emulate.png" width="400px" style="display:inline;" />
 4. Save/export the tag to use later
-<img src="./screenshots/options.png" width="400px" /> <img src="./screenshots/savedlist.png" width="200px" />
+<img src="./screenshots/options.png" width="400px" style="display:inline;" /> <img src="./screenshots/savedlist.png" width="200px" style="display:inline;" />
