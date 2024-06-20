@@ -12,7 +12,8 @@ static void clear_text_buffer(char* buffer, uint32_t len) {
 
 void nfcurl_scene_enter_url_on_enter(void* context) {
 	NfcUrlApp* app = context;
-	text_input_set_header_text(app->text_input, "Enter URL");
+	strcpy(app->text_buffer, furi_string_get_cstr(app->url));
+	text_input_set_header_text(app->text_input, "Enter URL (^ for symbols)");
 	text_input_set_result_callback(app->text_input, nfcurl_scene_enter_url_text_callback,
 								   app, app->text_buffer, 200, false);
 	view_dispatcher_switch_to_view(app->view_dispatcher, NfcUrlViewTextInput);

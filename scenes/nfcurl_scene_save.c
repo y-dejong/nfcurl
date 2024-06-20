@@ -1,6 +1,7 @@
 #include "../nfcurl_i.h"
 #include "nfcurl_scene.h"
 
+#include <string.h>
 #include <toolbox/path.h>
 #include <storage/storage.h>
 #include <toolbox/stream/file_stream.h>
@@ -47,8 +48,9 @@ static bool nfcurl_save_url(NfcUrlApp* app) {
 		success = false;
 	}
 
-	if(!stream_insert_format(urlstream, "%s:%s\n",
+	if(!stream_insert_format(urlstream, "%s:%c%s\n",
 							 furi_string_get_cstr(app->name),
+							 app->prefix + 64,
 							 furi_string_get_cstr(app->url))) {
 		FURI_LOG_E("nfcurl", "Error writing url to file");
 		success = false;
@@ -62,6 +64,7 @@ static bool nfcurl_save_url(NfcUrlApp* app) {
 
 void nfcurl_scene_save_on_enter(void* context) {
 	NfcUrlApp* app = context;
+    strcpy(app->text_buffer, furi_string_get_cstr(app->url));
 	text_input_set_header_text(app->text_input, "Enter Name");
     text_input_set_result_callback(app->text_input, nfcurl_scene_save_text_callback,
 							   app, app->text_buffer, 200, true);

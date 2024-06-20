@@ -1,3 +1,4 @@
+#include "core/string.h"
 #include "gui/modules/button_menu.h"
 #include "nfcurl_i.h"
 #include "nfcurl_scene.h"
@@ -30,10 +31,12 @@ void nfcurl_scene_savedlist_on_enter(void* context) {
 		split = furi_string_search_char(line, ':', 0);
 		if (split == FURI_STRING_FAILURE) continue;
 		app->urlpairs[index].name = furi_string_alloc();
+		FURI_LOG_D("NfcUrl", "Prefix char: %c", furi_string_get_char(line, split + 1));
+		app->urlpairs[index].prefix = furi_string_get_char(line, split + 1) - 64;
 		app->urlpairs[index].url = furi_string_alloc();
 	    furi_string_set_n(app->urlpairs[index].name, line, 0, split);
 		furi_string_set_n(app->urlpairs[index].url, line,
-						  split + 1, furi_string_size(line) - split - 1);
+						  split + 2, furi_string_size(line) - split - 2);
 		button_menu_add_item(app->button_menu,
 							 furi_string_get_cstr(app->urlpairs[index].name),
 							 index,
@@ -59,6 +62,7 @@ bool nfcurl_scene_savedlist_on_event(void* context, SceneManagerEvent event) {
 	if(event.type == SceneManagerEventTypeCustom) {
 		FURI_LOG_I("nfcurl", "EventTypeCustom");
 	    furi_string_set(app->url, app->urlpairs[event.event].url);
+		app->prefix = app->urlpairs[event.event].prefix;
 		nfcurl_create_tag(app);
 		scene_manager_next_scene(app->scene_manager, NfcUrlSceneEmulate);
 		consumed = true;

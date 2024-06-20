@@ -19,6 +19,7 @@
 
 typedef struct UrlPair {
 	FuriString* name;
+	char prefix;
 	FuriString* url;
 } UrlPair;
 
